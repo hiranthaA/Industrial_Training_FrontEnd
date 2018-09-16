@@ -84,9 +84,8 @@ class Login extends Component {
                 <div class="container py-5"></div>
                 <div class="row">
                     <div class="col-md-12">
-                        <h2 class="text-center text-white mb-4">Bootstrap 4 Login Form</h2>
                         <div class="row">
-                            <div class="col-md-6 mx-auto">
+                            <div class="col-md-4 mx-auto">
                                 <div class="card rounded-0">
                                     <div class="card-header">
                                         <h3 class="mb-0">Login</h3>
