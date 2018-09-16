@@ -198,7 +198,7 @@ class ContentOne extends Component {
     return (
         <div className="content">
           <div className="card content">
-            <div className="card-header">
+            <div className="card-header bg-secondary">
               Add New
             </div>
             <div className="card-body" id="formContainer">
