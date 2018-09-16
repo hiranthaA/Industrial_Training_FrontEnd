@@ -28,7 +28,7 @@ class Header extends Component {
 
     return (
       <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-between">
-        <a class="navbar-brand" href="#" id="headertext">Industrial Training Dashboard</a>
+        <a class="navbar-brand" href="#" id="headertext">SLIIT - Industrial Training Management</a>
         {logoutbutton}
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
