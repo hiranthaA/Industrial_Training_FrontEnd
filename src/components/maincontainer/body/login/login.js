@@ -58,14 +58,6 @@ class Login extends Component {
                 return logdata;
             }.bind(this)).then(function (usr) {
                 //alert("Supervisor addded. User Updated");
-                // document.getElementById("fname").value = "";
-                // document.getElementById("lname").value = "";
-                // document.getElementById("designation").value = "";
-                // document.getElementById("email").value = "";
-                // document.getElementById("contact").value = "";
-                // document.getElementById("password").value = "";
-                // document.getElementById("confpassword").value = "";
-                // document.getElementById("titleselect").value = "Mr."
             });
         }
         else {
