@@ -25,13 +25,11 @@ class ContentTwo extends Component {
     this.setCompany();
   }
 
-  setCompany(){
-    // Axios.get('http://localhost:9000/company/getcompany/'+this.state.loggeduser.id).then(function (data) {
-    //     this.setState({companyName : data.data.cmpName});
-    //     this.setState({companydetails : data.data});
-    //     console.log(this.state.companydetails);
-    // }.bind(this));
+  setIsTableUpdated(){
+    this.setState({istableupdated : !this.state.istableupdated});
+  }
 
+  setCompany(){
     Axios.get('http://localhost:9000/company/getcompany/'+this.state.loggeduser.id).then(function (data) {
         this.setState({companyName : data.data.cmpName});
         this.setState({companydetails : data.data});
