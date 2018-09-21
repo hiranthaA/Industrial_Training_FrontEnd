@@ -20,7 +20,8 @@ class SupervisorTable extends Component {
             editemail: null,
             editfname: null,
             editlname: null,
-            edittitle: null
+            edittitle: null,
+            displaymodal : "modal"
         }
     }
 
@@ -152,11 +153,13 @@ class SupervisorTable extends Component {
                 }
                 Axios.post('http://localhost:9000/user/updateUser', editedusr).then(function () {
                     console.log("successfully updated");
+                    this.setState({displaymodal: "modal"});
                     alert("Supervisor Updated Successfully!");
                     
-                });
+                }.bind(this));
                 return object;
             }.bind(this)).then(function (usr) {
+                this.getSupervisorList();
                 // alert("Supervisor Added Successfully");
                 // document.getElementById("fname").value = "";
                 // document.getElementById("lname").value = "";
@@ -166,11 +169,12 @@ class SupervisorTable extends Component {
                 // document.getElementById("password").value = "";
                 // document.getElementById("confpassword").value = "";
                 // document.getElementById("titleselect").value = "Mr."
-            });
+            }.bind(this));
 
         }
         else {
             console.log("validation failed");
+            this.setState({displaymodal: null});
             alert("Invalid Submit. Please check your entries and try again!");
         }
     }
@@ -179,6 +183,7 @@ class SupervisorTable extends Component {
     render() {
 
         let table;
+        let dismis=this.state.displaymodal;
 
         if (this.state.supervisorList.length !== 0) {
             console.log("data available");
@@ -219,7 +224,7 @@ class SupervisorTable extends Component {
                 {table}
 
 
-                <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div className="card-body" id="formContainer">
@@ -237,7 +242,7 @@ class SupervisorTable extends Component {
                                             <div className="col-sm-2">
                                                 <div className="form-group">
                                                     <label id="label">Title</label>
-                                                    <select value={this.state.edittitle} class="custom-select" id="titleselect" onChange={this.setEditTitle} >
+                                                    <select value={this.state.edittitle} class="custom-select" id="titleselectedit" onChange={this.setEditTitle} >
                                                         <option value="Mr." selected>Mr.</option>
                                                         <option value="Ms.">Ms.</option>
                                                         <option value="Mrs.">Mrs.</option>
@@ -251,13 +256,13 @@ class SupervisorTable extends Component {
                                             <div className="col-md-6">
                                                 <div className="form-group">
                                                     <label id="label" >First Name</label>
-                                                    <input type="text" value={this.state.editfname} onChange={this.setEditFname} className="form-control" id="fname" placeholder="First Name"></input>
+                                                    <input type="text" value={this.state.editfname} onChange={this.setEditFname} className="form-control" id="fnameedit" placeholder="First Name"></input>
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
                                                 <div className="form-group">
                                                     <label id="label">Last Name</label>
-                                                    <input type="text" value={this.state.editlname} onChange={this.setEditLname} className="form-control" id="lname" placeholder="Last Name"></input>
+                                                    <input type="text" value={this.state.editlname} onChange={this.setEditLname} className="form-control" id="lnameedit" placeholder="Last Name"></input>
                                                 </div>
                                             </div>
                                         </div>
@@ -265,13 +270,13 @@ class SupervisorTable extends Component {
                                             <div className="col-md-6">
                                                 <div className="form-group">
                                                     <label id="label">Designation</label>
-                                                    <input type="text" value={this.state.editdesignation} onChange={this.setEditDesignation} className="form-control" id="designation" placeholder="Designation"></input>
+                                                    <input type="text" value={this.state.editdesignation} onChange={this.setEditDesignation} className="form-control" id="designationedit" placeholder="Designation"></input>
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
                                                 <div className="form-group">
                                                     <label id="label">Email</label>
-                                                    <input type="email" value={this.state.editemail} onChange={this.setEditEmail} className="form-control" id="email" placeholder="Email"></input>
+                                                    <input type="email" value={this.state.editemail} onChange={this.setEditEmail} className="form-control" id="emailedit" placeholder="Email"></input>
                                                 </div>
                                             </div>
                                         </div>
@@ -279,7 +284,7 @@ class SupervisorTable extends Component {
                                             <div className="col-md-6">
                                                 <div className="form-group">
                                                     <label id="label">Contact No</label>
-                                                    <input type="number" value={this.state.editcontact} onChange={this.setEditContact} className="form-control" id="contact" placeholder="Contact No"></input>
+                                                    <input type="number" value={this.state.editcontact} onChange={this.setEditContact} className="form-control" id="contactedit" placeholder="Contact No"></input>
                                                 </div>
                                             </div>
                                         </div>

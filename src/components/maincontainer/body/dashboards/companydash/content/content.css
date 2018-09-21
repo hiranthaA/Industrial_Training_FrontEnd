@@ -10,3 +10,8 @@
 #label{
     float: left;
 }
+
+#btnaddnew{
+    /* float: left; */
+    margin-left: 20px
+}
