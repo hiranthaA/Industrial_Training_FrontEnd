@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
+import './content.css'
 
 class SupervisorTable extends Component {
     constructor(props) {
@@ -12,6 +13,8 @@ class SupervisorTable extends Component {
         this.setEditFname = this.setEditFname.bind(this);
         this.setEditLname = this.setEditLname.bind(this);
         this.setEditTitle = this.setEditTitle.bind(this);
+        this.deleteSupervisor = this.deleteSupervisor.bind(this);
+        this.setToDelete = this.setToDelete.bind(this);
         this.state = {
             supervisorList: [],
             editid : null,
@@ -21,8 +24,13 @@ class SupervisorTable extends Component {
             editfname: null,
             editlname: null,
             edittitle: null,
-            displaymodal : "modal"
+            displaymodal : "modal",
+            toDelete : null
         }
+    }
+
+    setToDelete(e){
+        this.setState({toDelete : e.target.id});
     }
 
     setEditId(id){
@@ -81,6 +89,24 @@ class SupervisorTable extends Component {
             this.setState({editdesignation : data.designation});
             this.setState({editemail : data.email});
             this.setState({edittitle : data.title});
+        }.bind(this));
+    }
+
+    deleteSupervisor(e){
+        console.log(this.state.toDelete);
+        Axios.get('http://localhost:9000/supervisor/deletesupervisor/' + this.state.toDelete).then(function (data) {
+            console.log(data);
+
+            Axios.get('http://localhost:9000/user/deleteUser/'+this.state.toDelete).then(function(res){
+                console.log(res);
+            }.bind(this));
+
+            return data;
+        }.bind(this)).then(function (data) {
+            if(data){
+                this.getSupervisorList();
+                console.log("supervisor deleted successfully");
+            }
         }.bind(this));
     }
 
@@ -207,7 +233,8 @@ class SupervisorTable extends Component {
                                     <td>{supvsr.designation}</td>
                                     <td>{supvsr.contact}</td>
                                     <td>{supvsr.email}</td>
-                                    <td><button type="button" className="btn btn-outline-info" id={supvsr.id} data-toggle="modal" data-target=".bd-example-modal-lg" onClick={this.getSupervisorDetailsToEdit}>Edit</button></td>
+                                    <td><button type="button" className="btn btn-outline-info btnEdit" id={supvsr.id} data-toggle="modal" data-target=".bd-example-modal-lg" onClick={this.getSupervisorDetailsToEdit}>Edit</button></td>
+                                    <td><button type="button" className="btn btn-outline-danger btnDelete" id={supvsr.id} data-toggle="modal" data-target="#deletesupmodal" onClick={this.setToDelete}>Delete</button></td>
                                 </tr>
                             );
                         })}
@@ -223,7 +250,7 @@ class SupervisorTable extends Component {
             <div>
                 {table}
 
-
+                {/* edit dialog */}
                 <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -298,6 +325,27 @@ class SupervisorTable extends Component {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* delete modal */}
+                <div class="modal fade" id="deletesupmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Delete Entry</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete this entry?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={this.deleteSupervisor}>Delete</button>
+                        </div>
                         </div>
                     </div>
                 </div>

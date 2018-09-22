@@ -7,6 +7,7 @@ class ContentTwo extends Component {
 
     constructor(props) {
         super(props);
+        this.child = React.createRef();
         this.setCompany = this.setCompany.bind(this);
         this.setFirstName = this.setFirstName.bind(this);
         this.setLastName = this.setLastName.bind(this);
@@ -37,7 +38,8 @@ class ContentTwo extends Component {
             contact: null,
             designation: null,
             password: null,
-            cpassword: null
+            cpassword: null,
+            istableupdated : false
         }
     }
 
@@ -47,17 +49,14 @@ class ContentTwo extends Component {
     }
 
     componentDidMount() {
-        this.setCompany();
-    }
-
-    setIsTableUpdated() {
-        this.setState({ istableupdated: !this.state.istableupdated });
+        this.setCompany(this.state.loggeduser.id);
     }
 
     setCompany() {
         Axios.get('http://localhost:9000/company/getcompany/' + this.state.loggeduser.id).then(function(data) {
             this.setState({ companyName: data.data.cmpName });
             this.setState({ companydetails: data.data });
+            this.setState({ company: data.data.cmpId });
             console.log(this.state.companydetails);
         }.bind(this));
     }
@@ -198,6 +197,7 @@ class ContentTwo extends Component {
                 });
                 return supData;
             }.bind(this)).then(function(usr) {
+                this.child.current.getSupervisorList();
                 alert("Supervisor Added Successfully");
                 document.getElementById("fname").value = "";
                 document.getElementById("lname").value = "";
@@ -207,7 +207,7 @@ class ContentTwo extends Component {
                 document.getElementById("password").value = "";
                 document.getElementById("confpassword").value = "";
                 document.getElementById("titleselect").value = "Mr."
-            });
+            }.bind(this));
 
         }
         else {
@@ -245,7 +245,7 @@ class ContentTwo extends Component {
                     </div>
                     <div className="card-body" id="formContainer">
                         <div class="table-responsive">
-                            <SupervisorTable currentCompany={this.state.loggeduser.id} />
+                            <SupervisorTable ref={this.child} currentCompany={this.state.loggeduser.id} updatetable={this.istableupdated} />
                         </div>
                     </div>
                 </div>
