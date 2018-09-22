@@ -11,8 +11,8 @@ class SidePanel extends Component {
     return(
       <div className="col-sm-2 p-0">
           <div class="list-group " >
-            <a href="#" class="list-group-item list-group-item-action" onClick={()=> this.props.setView("contentOne")}>Add Supervisor</a>
-            <a href="#" class="list-group-item list-group-item-action" onClick={()=> this.props.setView("contentTwo")}>Company Supervisors</a>
+            <a href="#" class="list-group-item list-group-item-action" onClick={()=> this.props.setView("contentOne")}>Manage</a>
+            <a href="#" class="list-group-item list-group-item-action" onClick={()=> this.props.setView("contentTwo")}>Second item</a>
             <a href="#" class="list-group-item list-group-item-action" onClick={()=> this.props.setView("contentThree")}>Third item</a>
           </div>
       </div>
