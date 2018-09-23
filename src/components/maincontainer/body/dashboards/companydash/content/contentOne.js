@@ -106,6 +106,26 @@ class ContentOne extends Component {
         this.setState({ cpassword: e.target.value });
     }
 
+    clearForm() {
+        console.log("clear form started");
+        this.state.fname=null;
+        this.state.lname=null;
+        this.state.title="Mr.";
+        this.state.email=null;
+        this.state.contact=null;
+        this.state.designation=null;
+        this.state.password=null;
+        this.state.cpassword=null;
+        document.getElementById("fname").value = "";
+        document.getElementById("lname").value = "";
+        document.getElementById("designation").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("contact").value = "";
+        document.getElementById("password").value = "";
+        document.getElementById("confpassword").value = "";
+        document.getElementById("titleselect").value = "Mr.";
+    }
+
     validateFirstName() {
         var fnameok = true;
         if (this.state.fname === null || this.state.fname === "") {
@@ -198,6 +218,7 @@ class ContentOne extends Component {
                 return supData;
             }.bind(this)).then(function(usr) {
                 this.child.current.getSupervisorList();
+                window.$('#addSupModal').modal('hide');
                 alert("Supervisor Added Successfully");
                 document.getElementById("fname").value = "";
                 document.getElementById("lname").value = "";
@@ -215,19 +236,6 @@ class ContentOne extends Component {
             alert("Invalid Submit. Please check your entries and try again!");
         }
     }
-
-    clearForm() {
-        console.log("clear form started");
-        document.getElementById("fname").value = "";
-        document.getElementById("lname").value = "";
-        document.getElementById("designation").value = "";
-        document.getElementById("email").value = "";
-        document.getElementById("contact").value = "";
-        document.getElementById("password").value = "";
-        document.getElementById("confpassword").value = "";
-        document.getElementById("titleselect").value = "Mr.";
-    }
-
     render() {
         return (
             <div className="content">

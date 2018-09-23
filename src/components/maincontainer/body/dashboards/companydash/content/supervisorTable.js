@@ -181,20 +181,11 @@ class SupervisorTable extends Component {
                     console.log("successfully updated");
                     this.setState({displaymodal: "modal"});
                     alert("Supervisor Updated Successfully!");
-                    
+                    window.$('#editSupModal').modal('hide');
                 }.bind(this));
                 return object;
             }.bind(this)).then(function (usr) {
                 this.getSupervisorList();
-                // alert("Supervisor Added Successfully");
-                // document.getElementById("fname").value = "";
-                // document.getElementById("lname").value = "";
-                // document.getElementById("designation").value = "";
-                // document.getElementById("email").value = "";
-                // document.getElementById("contact").value = "";
-                // document.getElementById("password").value = "";
-                // document.getElementById("confpassword").value = "";
-                // document.getElementById("titleselect").value = "Mr."
             }.bind(this));
 
         }
@@ -251,7 +242,7 @@ class SupervisorTable extends Component {
                 {table}
 
                 {/* edit dialog */}
-                <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal fade bd-example-modal-lg" id="editSupModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div className="card-body" id="formContainer">
