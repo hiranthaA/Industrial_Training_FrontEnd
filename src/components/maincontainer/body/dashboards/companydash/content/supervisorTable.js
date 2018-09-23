@@ -220,12 +220,12 @@ class SupervisorTable extends Component {
                         {this.state.supervisorList.map((supvsr, i) => {
                             return (
                                 <tr key={i}>
-                                    <td>{supvsr.title + " " + supvsr.fname + " " + supvsr.lname}</td>
-                                    <td>{supvsr.designation}</td>
-                                    <td>{supvsr.contact}</td>
-                                    <td>{supvsr.email}</td>
-                                    <td><button type="button" className="btn btn-outline-info btnEdit" id={supvsr.id} data-toggle="modal" data-target=".bd-example-modal-lg" onClick={this.getSupervisorDetailsToEdit}>Edit</button></td>
-                                    <td><button type="button" className="btn btn-outline-danger btnDelete" id={supvsr.id} data-toggle="modal" data-target="#deletesupmodal" onClick={this.setToDelete}>Delete</button></td>
+                                    <td className="text-left">{supvsr.title + " " + supvsr.fname + " " + supvsr.lname}</td>
+                                    <td className="text-left">{supvsr.designation}</td>
+                                    <td className="text-left">{supvsr.contact}</td>
+                                    <td className="text-left">{supvsr.email}</td>
+                                    <td className="text-left"><button type="button" className="btn btn-outline-info btnEdit" id={supvsr.id} data-toggle="modal" data-target=".bd-example-modal-lg" onClick={this.getSupervisorDetailsToEdit}>Edit</button></td>
+                                    <td className="text-left"><button type="button" className="btn btn-outline-danger btnDelete" id={supvsr.id} data-toggle="modal" data-target="#deletesupmodal" onClick={this.setToDelete}>Delete</button></td>
                                 </tr>
                             );
                         })}
