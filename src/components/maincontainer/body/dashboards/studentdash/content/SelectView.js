@@ -88,7 +88,7 @@ class SelectView extends Component {
                 console.log("Supervisor: "+res);
                 axios.get("http://localhost:9000/company/getcompany/"+res.data["companyid"]).then(
                     (com)=>{
-
+                        debugger;
                         console.log("Company :"+com);
                         axios.post("http://localhost:9000/forms/formi1",{
             
@@ -103,7 +103,7 @@ class SelectView extends Component {
                             cgpa:StudentCGPA,
                             supervisorName:res.data.fname+" "+res.data.lname,
                             supervisorTitle:res.data.title,
-                            supervisorDesignation:res.data.supervisorDesignation,
+                            supervisorDesignation:res.data.designation,
                             supervisorPhone:res.data.contact,
                             supervisorEmail:res.data.email,
                             companyName:com.data.cmpName,
@@ -129,7 +129,7 @@ class SelectView extends Component {
             }
             
         )
-        window.$('#addSupModal').modal('hide');
+        window.$('#addSupModal').modal('fade');
             e.preventDefault();
         
     }
