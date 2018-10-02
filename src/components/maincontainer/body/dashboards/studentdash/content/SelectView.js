@@ -20,9 +20,10 @@ class SelectView extends Component {
 
     }
     componentDidMount(){
-        // debugger;
+
         console.log(this.props);
         window.$('#addSupModal').modal('show');
+        window.$('#addSupModal').style="padding-right:0px"
         this.getSupervisorTable();
     }
     getSupervisorTable(){
@@ -80,15 +81,14 @@ class SelectView extends Component {
         if(supervisors[i].checked)
                 selectedSupervisor = supervisors[i].id;
         }
-        
-        alert(selectedSupervisor);
+
 
         axios.get("http://localhost:9000/supervisor/getsupervisor/"+selectedSupervisor).then(
             (res)=>{
                 console.log("Supervisor: "+res);
                 axios.get("http://localhost:9000/company/getcompany/"+res.data["companyid"]).then(
                     (com)=>{
-                        debugger;
+
                         console.log("Company :"+com);
                         axios.post("http://localhost:9000/forms/formi1",{
             
@@ -129,55 +129,74 @@ class SelectView extends Component {
             }
             
         )
-        window.$('#addSupModal').modal('fade');
+
+        
+            
+            window.$('#addSupModal').hide();
+            window.$('body').removeClass('modal-open');
+            window.$('.modal-backdrop').remove();
             e.preventDefault();
         
     }
+    CloseModal(){
+            window.$('#addSupModal').hide();
+            window.$('body').removeClass('modal-open');
+            window.$('.modal-backdrop').remove();
+           
+    }
     render(){
         return(
-        <div className="content">
+        <div className="content-student">
             <div className="modal fade bd-example-modal-lg supervisorView" id="addSupModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                <div className="card border-secondary">
-                    <div className="card-header bg-info text-white">
-                        <h4 className="heading pl-2">Select An Supervisor</h4>
-                    </div>
-                    <div className="card-body">
-                        <form>
-                            <div className="form-group row">
-                                <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <div className="row">
-                                        <Table  striped responsive condensed  hover id="supervisorTable">
-                                            
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Company</th>
-                                                    <th>Designation</th>
-                                                    <th>Email</th>            
-                                                    <th>Contact</th>
-                                                    <th></th>
-                                                </tr>    
-                                            
-                                            <tbody id="supervisorTableBody"></tbody>
-                                        </Table>
-                                    </div>
-                                </div>
+                <div className="modal-dialog modal-dialog-Student">
+                    <div className="modal-content">
+                        <div className="card border-secondary ">
+                            <div className="card-header modal-header bg-info text-white">
+                                <h4 className="headingStudent pl-2">Select An Supervisor</h4>
                             </div>
-                        </form>
-                    </div>
-                    <div className="card-footer">
-                        <form>
-                            <div className="form-group row">
-                                <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <div className="row">
-                                        <Button bsStyle="success"  bsSize="large" onClick={this.fillFormI1} block>Submit</Button>
+                            <div className="card-body modal-body">
+                                <form>
+                                    <div className="form-group row rowStudent">
+                                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div className="row rowStudent">
+                                                <Table  striped responsive condensed  hover id="supervisorTable">
+                                                    
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Company</th>
+                                                            <th>Designation</th>
+                                                            <th>Email</th>            
+                                                            <th>Contact</th>
+                                                            <th></th>
+                                                        </tr>    
+                                                    
+                                                    <tbody id="supervisorTableBody"></tbody>
+                                                </Table>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
-                        </form>
+                            <div className="card-footer modal-footer">
+                                <form>
+                                    <div className="form-group row rowStudent">
+                                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div className="row rowStudent" >
+                                                <div className="col-md-6 col-sm-6">
+                                                    <Button bsStyle="success"  data-dismiss="modal" bsSize="large" onClick={this.fillFormI1} block>Submit</Button>
+                                                </div>
+                                                <div className="col-md-6 col-sm-6">
+                                                    <Button bsStyle="danger"  data-dismiss="modal" bsSize="large" onClick={this.CloseModal} block>Close</Button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    </div>
+                </div>
             </div>
-            
         </div>
         );
     }

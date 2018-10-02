@@ -225,6 +225,13 @@ class ContentOne extends Component {
     fillFormI1(e){
 
         this.setState({selectVisible:true});
+
+
+        window.$("#addSupModal").modal("show");
+        window.$("#addSupModal").show();
+        window.$('.modal-backdrop').show();
+        // window.$("body").addClass("modal-open");
+       
         /**
          * After Submit Clicked
          * 
@@ -287,7 +294,7 @@ class ContentOne extends Component {
             supervisorSelection =(<SelectView student={this.state}/>);
         }
         return(
-            <div className="content">
+            <div className="contentStudent">
                 <h1>Fill first part of Form I-1</h1>
                 <div >
                     <hr/>
@@ -337,16 +344,34 @@ class ContentOne extends Component {
                                             <div className="col-md-12">
                                                 <div className="row">
                                                     <div className="col-md-4 col-sm-4">
-                                                        <label>     Semester:
-                                                            <input className='inputBlock' type="text" id ="sem" name="Semester" value={this.state.Semester} onChange={this.setSemester}/></label>
+                                                        <div className="row">
+                                                            <div className="col-md-6 col-sm-6">
+                                                                <label>Semester:</label>
+                                                            </div>
+                                                            <div className="col-md-6 col-sm-6">
+                                                                <input className='inputBlock' type="text" id ="sem" name="Semester" value={this.state.Semester} onChange={this.setSemester}/>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div className="col-md-4 col-sm-4">
-                                                        <label>     Year:
-                                                            <input className='inputBlock' type="text" id ="yr" name="Year" value={this.state.StudentYear} onChange={this.setYear}/></label>
+                                                        <div className="row">
+                                                            <div className="col-md-6 col-sm-6">
+                                                                <label>Year:</label>
+                                                            </div>
+                                                            <div className="col-md-6 col-sm-6">
+                                                                <input className='inputBlock' type="text" id ="yr" name="Year" value={this.state.StudentYear} onChange={this.setYear}/>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div className="col-md-4 col-sm-4">
-                                                        <label>     CGPA:
-                                                            <input className='inputBlock' type="text" id ="cgpa" name="StudentCGPA" value={this.state.StudentCGPA} onChange={this.setCGPA}/></label>
+                                                        <div className="row">
+                                                            <div className="col-md-6 col-sm-6">
+                                                                <label>CGPA:</label>
+                                                            </div>
+                                                            <div className="col-md-6 col-sm-6">
+                                                                <input className='inputBlock' type="text" id ="cgpa" name="StudentCGPA" value={this.state.StudentCGPA} onChange={this.setCGPA}/>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

@@ -1,13 +1,17 @@
-.content{
+.contentStudent{
     width : 100%;
     height : 100vh;
 }
+.rowStudent{
+    margin: 0px;
+    
+}
 
-.heading{
+.headingStudent{
     text-align: left;
 }
 
-#label{
+#labelStudent{
     float: left;
 }
 
@@ -18,8 +22,21 @@
 }
 
 .supervisorView{
+    padding-right: 0;
     position: fixed;
     margin: 5%;
+    height: 400px;
     
     
+}
+.modal-dialog-Student {
+    min-width: 50%;
+    
+}
+
+@media (min-width: 576px){
+    .modal-dialog-Student {
+        max-width: 100%;
+        margin: 1.75rem auto;
+    }
 }
