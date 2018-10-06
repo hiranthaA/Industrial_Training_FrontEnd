@@ -12,7 +12,7 @@ class SidePanel extends Component {
       <div className="col-sm-2 p-0">
           <div class="list-group " >
             <a href="#" class="list-group-item list-group-item-action" onClick={()=> this.props.setView("contentOne")}>Form I-1</a>
-            <a href="#" class="list-group-item list-group-item-action" onClick={()=> this.props.setView("contentTwo")}>Second item</a>
+            <a href="#" class="list-group-item list-group-item-action" onClick={()=> this.props.setView("contentTwo")}>Form I-3</a>
             <a href="#" class="list-group-item list-group-item-action" onClick={()=> this.props.setView("contentThree")}>Third item</a>
           </div>
       </div>
