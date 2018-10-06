@@ -326,7 +326,7 @@ class ContentOne extends Component {
             (canvas)=>{
                 const imageData = canvas.toDataURL('image/png');
                 const pdf = new jsPDF();
-                pdf.addImage(imageData, "JPEG",5,30,200,60 );
+                pdf.addImage(imageData, "JPEG",5,30,200,100 );
                 // pdf.output('dataurlnewwindow');
                 pdf.save("Report.pdf");
             });
