@@ -332,10 +332,11 @@ class SelectView extends Component {
     }
     render(){
         let submit;
-        if(this.props.student.supervisorSelect!==null){
+
+        if(this.props.student.supervisorSelect===true){
             submit = (<Button bsStyle="success"  data-dismiss="modal" id = "formI3Submit" bsSize="large" onClick={this.fillFormI3} block>Submit</Button>)
             
-        }else if(this.props.student.selectVisible!==null){
+        }else if(this.props.student.selectVisible===true){
             submit=(<Button bsStyle="success"  data-dismiss="modal" id = "formI1Submit" bsSize="large" onClick={this.fillFormI1} block>Submit</Button>)
         }
         return(
