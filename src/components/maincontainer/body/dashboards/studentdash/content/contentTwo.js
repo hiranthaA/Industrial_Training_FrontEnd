@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import axios                    from 'axios';
+import SelectView               from './SelectView';
 import './content.css';
 
 class ContentTwo extends Component {
@@ -13,11 +15,19 @@ class ContentTwo extends Component {
       to:"",
       summary:"",
       details:"",
-
+      supervisorSelect:false
     }
   }
   submitFrom(e){
+    if(this.state.description!==""){
 
+      this.setState({supervisorSelect:true})
+      window.$("#addSupModal").modal("show");
+      window.$("#addSupModal").show();
+      window.$('.modal-backdrop').show();
+    }
+    else
+      alert("Please fill the description")
   }
   handleChange(e){
     var id = e.target.id;
@@ -36,6 +46,10 @@ class ContentTwo extends Component {
     }
   }
   render(){
+    let supervisorSelection;
+        if(this.state.supervisorSelect!==false){
+            supervisorSelection =(<SelectView student={this.state} loggeduser={this.props.loggeduser} />);
+        }
     return(
       <div className="contentStudent">
           <div className="card">
@@ -122,6 +136,7 @@ class ContentTwo extends Component {
             </div>
           </div>
         </div>
+        {supervisorSelection}
       </div>
     );
   }

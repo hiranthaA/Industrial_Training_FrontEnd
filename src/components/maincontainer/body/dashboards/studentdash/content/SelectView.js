@@ -9,6 +9,7 @@ class SelectView extends Component {
         super(props);
         this.fillFormI1 = this.fillFormI1.bind(this);
         this.validateForm = this.validateForm.bind(this);
+        this.fillFormI3 = this.fillFormI3.bind(this);
         this.state = {
             formID:null,
             date : new Date(),
@@ -118,11 +119,12 @@ class SelectView extends Component {
 
     }
     componentDidMount(){
-
+        
         console.log(this.props);
         window.$('#addSupModal').modal('show');
         window.$('#addSupModal').style="padding-right:0px"
         this.getSupervisorTable();
+
     }
     getSupervisorTable(){
         var supervisorTable = document.getElementById("supervisorTable");
@@ -160,6 +162,88 @@ class SelectView extends Component {
        
         
     }
+
+    fillFormI3(e){
+        var party = this.state.student.party;
+        var description = this.state.student.description;
+        var from = this.state.student.from;
+        var to = this.state.student.to;
+        var summary = this.state.student.summary;
+        var details = this.state.student.details;
+
+        var StudentEmail ;
+        var StudentCGPA ;
+        var StudentId;
+        
+        var supervisors = document.getElementsByName("Supervisor");
+                var selectedSupervisor;
+
+                for(var i = 0; i < supervisors.length; i++) {
+                if(supervisors[i].checked)
+                        selectedSupervisor = supervisors[i].id;
+                }
+        axios.get("http://localhost:9000/student/id/"+this.props.loggeduser.id).then(
+            function(response){
+
+                console.log(response.data);
+                StudentId=response.data.itNo;
+                StudentEmail=response.data.email;
+                StudentCGPA=response.data.gpa;
+                
+                axios.get("http://localhost:9000/supervisor/getsupervisor/"+selectedSupervisor).then(
+                (res)=>{
+                    console.log("Supervisor: "+res);
+                    axios.get("http://localhost:9000/company/getcompany/"+res.data["companyid"]).then(
+                        (com)=>{
+
+                            console.log("Company :"+com);
+                            axios.post("http://localhost:9000/forms/formi3",{
+                
+                                studentId:StudentId,
+                                studentEmail:StudentEmail,
+                                trainingParty:party,
+                                description:description,
+                                from:from,
+                                to:to,
+                                summary:summary,
+                                details:details,
+                                supervisorEmail:res.data.email,
+                                status:"PARTIAL"
+
+
+                            }).then(
+                                function(response){
+                                    
+                                    console.log(response);
+                                    alert("Form created successfully");
+                                
+                                }
+                            ).catch(function (error) {
+                                console.log(error);
+                                alert("Error");
+                                
+                            });
+                        }
+                );
+                    
+                }
+                
+            )
+            
+
+
+
+            }.bind(this)
+        ).catch(function (error) {
+            console.log(error);
+            alert("error");
+        });
+
+
+        this.CloseModal();
+        e.preventDefault();
+    }
+
     fillFormI1(e){
         var StudentId = this.state.student.StudentID;
         var StudentName = this.state.student.StudentName;
@@ -247,6 +331,13 @@ class SelectView extends Component {
            
     }
     render(){
+        let submit;
+        if(this.props.student.supervisorSelect!==null){
+            submit = (<Button bsStyle="success"  data-dismiss="modal" id = "formI3Submit" bsSize="large" onClick={this.fillFormI3} block>Submit</Button>)
+            
+        }else if(this.props.student.selectVisible!==null){
+            submit=(<Button bsStyle="success"  data-dismiss="modal" id = "formI1Submit" bsSize="large" onClick={this.fillFormI1} block>Submit</Button>)
+        }
         return(
         <div className="content-student">
             <div className="modal fade bd-example-modal-lg supervisorView" id="addSupModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -288,7 +379,7 @@ class SelectView extends Component {
                                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                             <div className="row rowStudent" >
                                                 <div className="col-md-6 col-sm-6">
-                                                    <Button bsStyle="success"  data-dismiss="modal" bsSize="large" onClick={this.fillFormI1} block>Submit</Button>
+                                                    {submit}
                                                 </div>
                                                 <div className="col-md-6 col-sm-6">
                                                     <Button bsStyle="danger"  data-dismiss="modal" bsSize="large" onClick={this.CloseModal} block>Close</Button>
