@@ -19,7 +19,7 @@ class ContentTwo extends Component {
     }
   }
   submitFrom(e){
-    if(this.state.description!==""){
+    if(this.state.description!==""&&this.state.summary!==""){
 
       this.setState({supervisorSelect:true})
       window.$("#addSupModal").modal("show");
@@ -27,7 +27,7 @@ class ContentTwo extends Component {
       window.$('.modal-backdrop').show();
     }
     else
-      alert("Please fill the description")
+      alert("Please fill the description and summary of key tasks")
   }
   handleChange(e){
     var id = e.target.id;
@@ -66,16 +66,16 @@ class ContentTwo extends Component {
                 
               </div>
               <div className="col-md-10 col-sm-10">
-                <input type="text" className="i3Input" value={this.state.party} onChange={this.handleChange} id="trainingParty"></input>
+                <input type="text" className="i3Input" value={this.state.party} onChange={this.handleChange} placeholder="Training Party" id="trainingParty"></input>
               </div>
             </div>
             <div className="row">
               <div className="col-md-2 col-sm-2">
-                <label  className="labelStudent" htmlFor="trainingDescription"><b>Training Description</b></label>
+                <label  className="labelStudent" htmlFor="trainingDescription"><b>Training Description<font color="red">*</font></b></label>
                 
               </div>
               <div className="col-md-10 col-sm-10">
-                <textarea className="i3Input" value={this.state.description} onChange={this.handleChange} id="trainingDescription" row={3} col={2}></textarea>
+                <textarea className="i3Input" value={this.state.description} onChange={this.handleChange} placeholder="Training Description-Required" id="trainingDescription" row={3} col={2}></textarea>
               </div>
             </div>
           
@@ -116,10 +116,10 @@ class ContentTwo extends Component {
             <div className="card-body">
               <div className="row">
                 <div className="col-md-2 col-sm-2" >
-                    <label className="labelStudent" htmlFor="summary">Summary of key tasks</label>
+                    <label className="labelStudent" htmlFor="summary">Summary of key tasks<font color="red">*</font></label>
                 </div>
                 <div className="col-md-10 col-sm-10" >
-                    <textarea className="i3Input" value={this.state.summary} onChange={this.handleChange} placeholder="Enter your summary of key tasks completed in this month." id="summary"></textarea>
+                    <textarea className="i3Input" value={this.state.summary} onChange={this.handleChange} placeholder="Enter your summary of key tasks completed in this month.-Required" id="summary"></textarea>
                 </div>
               </div>
               <div className="row">
@@ -127,7 +127,7 @@ class ContentTwo extends Component {
                     <label className="labelStudent" htmlFor="details">Details of key tasks</label>
                 </div>
                 <div className="col-md-10 col-sm-10" >
-                    <textarea className="i3Input" value={this.state.details} onChange={this.handleChange} placeholder="Enter your details of key tasks completed in this month." id="details"></textarea>
+                    <textarea className="i3Input" value={this.state.details} onChange={this.handleChange} placeholder="Enter your details of key tasks completed in this month.-Optional" id="details"></textarea>
                 </div>
               </div>
             
