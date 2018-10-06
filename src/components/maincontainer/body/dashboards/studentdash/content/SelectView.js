@@ -29,7 +29,7 @@ class SelectView extends Component {
         return valid;
     }
     validation(text,type){
-        debugger;
+
         var valid = false;
         if(type==="text"){
             if(text===""){
