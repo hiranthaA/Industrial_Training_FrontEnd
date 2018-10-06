@@ -332,7 +332,7 @@ class SelectView extends Component {
     }
     render(){
         let submit;
-        console.log(this.props.student)
+
         if(this.props.student.supervisorSelect===true){
             submit = (<Button bsStyle="success"  data-dismiss="modal" id = "formI3Submit" bsSize="large" onClick={this.fillFormI3} block>Submit</Button>)
             
