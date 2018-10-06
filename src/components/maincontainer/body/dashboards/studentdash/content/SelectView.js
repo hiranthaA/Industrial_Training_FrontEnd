@@ -101,13 +101,13 @@ class SelectView extends Component {
                             semester:Semester,
                             year:StudentYear,
                             cgpa:StudentCGPA,
-                            supervisorName:res.data.fname+" "+res.data.lname,
-                            supervisorTitle:res.data.title,
-                            supervisorDesignation:res.data.designation,
-                            supervisorPhone:res.data.contact,
+                            // supervisorName:res.data.fname+" "+res.data.lname,
+                            // supervisorTitle:res.data.title,
+                            // supervisorDesignation:res.data.designation,
+                            // supervisorPhone:res.data.contact,
                             supervisorEmail:res.data.email,
-                            companyName:com.data.cmpName,
-                            companyAddres:com.data.address,
+                            // companyName:com.data.cmpName,
+                            // companyAddres:com.data.address,
                             status:"PARTIAL"
 
 
@@ -161,16 +161,19 @@ class SelectView extends Component {
                                             <div className="row rowStudent">
                                                 <Table  striped responsive condensed  hover id="supervisorTable">
                                                     
-                                                        <tr>
-                                                            <th>Name</th>
-                                                            <th>Company</th>
-                                                            <th>Designation</th>
-                                                            <th>Email</th>            
-                                                            <th>Contact</th>
-                                                            <th></th>
-                                                        </tr>    
                                                     
-                                                    <tbody id="supervisorTableBody"></tbody>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th>Company</th>
+                                                                <th>Designation</th>
+                                                                <th>Email</th>            
+                                                                <th>Contact</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                    <tbody id="supervisorTableBody">
+                                                    </tbody>
                                                 </Table>
                                             </div>
                                         </div>
