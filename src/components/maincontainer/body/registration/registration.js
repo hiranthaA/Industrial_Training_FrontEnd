@@ -136,15 +136,15 @@ class Registration extends Component {
             </div>
 
 
-            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
 
-              <div class="card">
+              <div className="card">
                 <div className="card-header">
                   <h4 className="heading "><i class="fas fa-user-plus"></i> Company Registration</h4>
                 </div>
-                <div class="card-body" >
+                <div class="card-body col-lg-6 col-md-6 col-sm-6 offset-sm-1" >
 
-                  <form onSubmit={this.addCompany}>
+                  <form>
 
                     <div class="form-group row">
                       <label className="grey-text">Company Name</label>
@@ -183,7 +183,7 @@ class Registration extends Component {
 
                     <div class="form-group row">
                       <div class="offset-sm-2 col-sm-8 pb-3 pt-2">
-                        <button type="submit" class="btn btn-outline-primary btn-block" >Register</button>
+                        <button type="button" class="btn btn-outline-primary btn-block" onClick={this.addCompany} >Register</button>
                       </div>
                     </div>
                   </form>
@@ -230,8 +230,52 @@ class Registration extends Component {
         password: password
       };
 
+        fetch("http://localhost:9000/company/get/"+email)
+            .then(res=>res.json())
+            .then(
+                (results)=> {
 
-      fetch('http://localhost:9000/company/add', {
+                  console.log(results);
+                  console.log("results mail "+results.email);
+                  if(results.email==email) {
+                      alert("The Email You Entered is Already Registered with the System");
+                  }
+
+                },
+                (response) => {
+                    console.log("Name not used");
+                    fetch('http://localhost:9000/company/add', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json, text/plain',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(obj)
+                    }).then(function (response) {
+                        return response.json();
+                    }).then(function (responseData) {
+                        var id = (responseData.cmpId);
+                        var objUser = {
+                            id: id,
+                            email: email,
+                            password: password,
+                            type: "company"
+                        };
+                        return fetch('http://localhost:9000/user/addUser', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json, text/plain',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(objUser)
+                        }).then(function () {
+                            alert("Company Registered Succesfully! Please Login to continue");
+                            window.location.reload();
+                        });
+
+                    });
+                });
+      /*fetch('http://localhost:9000/company/add', {
         method: 'POST',
         headers: {
           'Accept': 'application/json, text/plain',
@@ -257,12 +301,12 @@ class Registration extends Component {
           body: JSON.stringify(objUser)
         }).then(function () {
           alert("Company Registered Succesfully");
-          window.location.reload();
+          /!*window.location.reload();*!/
         });
 
       });
 
-
+*/
     }
 
   }
