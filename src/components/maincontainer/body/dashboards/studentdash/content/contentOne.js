@@ -338,7 +338,7 @@ class ContentOne extends Component {
     render(){
         let supervisorSelection;
         if(this.state.selectVisible!==false){
-            supervisorSelection =(<SelectView student={this.state}/>);
+            supervisorSelection =(<SelectView loggeduser={this.props.superProps} student={this.state}/>);
         }
         return(
             <div className="contentStudent">
