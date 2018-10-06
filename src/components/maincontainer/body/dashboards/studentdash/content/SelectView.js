@@ -8,6 +8,7 @@ class SelectView extends Component {
     constructor(props){
         super(props);
         this.fillFormI1 = this.fillFormI1.bind(this);
+        this.validateForm = this.validateForm.bind(this);
         this.state = {
             formID:null,
             date : new Date(),
@@ -15,6 +16,103 @@ class SelectView extends Component {
 
         }
         
+    }
+
+    validateForm(e){
+        var valid = false;
+        if(this.validation(this.state.student.StudentName,"text")&&this.validation(this.state.student.StudentAddress,"text")&&this.validation(this.state.student.StudentEmail,"email")&&
+                               this.validation(this.state.student.StudentID,"itNo")&&this.validation(this.state.student.StudentHomeContact,"mobile")&&this.validation(this.state.student.StudentMobile,"mobile") )
+            {
+                this.setState({valid:true});
+                valid=true;
+            }
+        return valid;
+    }
+    validation(text,type){
+        debugger;
+        var valid = false;
+        if(type==="text"){
+            if(text===""){
+                valid =  false;
+            }
+            var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|<>\/?]+/;
+
+            if(format.test(text)){
+                valid =  false;
+            } else {
+                valid =  true;
+            }
+            
+        }else if(type==="mobile"){
+            
+            if(text===""){
+                valid =  false;
+            }
+            var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+
+            if(format.test(text)){
+                valid =  false;
+            } else {
+
+                valid  = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(text);
+                
+            }
+            if(!valid){
+                alert("Entered Contact number not valid");
+            }
+        }else if(type==="email"){
+            if(text===""){
+                valid  = false;
+            }
+            var format = /[!#$%^&*()_+\-=\[\]{};':"\\|,<>\/?]+/;
+
+            if(format.test(text)){
+                valid  = false;
+            } else {
+
+                valid  = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(text);
+                
+            }
+            if(!valid){
+                alert("Entered email not valid");
+            }
+        }else if(type==="itNo"){
+            if(text===""){
+                valid  = false;
+            }
+            var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+
+            if(format.test(text)){
+                valid  = false;
+            } else {
+
+                valid  = /^[IiBbEe][TtMmNn][0-9]{8}$/.test(text);
+                
+            }
+            if(!valid){
+                alert("Entered IT number not valid");
+            }
+        }else if(type==="nic"){
+            
+            if(text===""){
+                valid =  false;
+            }
+            var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    
+            if(format.test(text)){
+                valid =  false;
+            } else {
+                // if(this.state.selectedOption==="nic")
+                    valid =  /^[0-9]{9}[XxVv]{1}$/.test(text);
+                // else
+                //     return /[a-zA-Z]{2}[0-9]{7}/.test(nicorpass);
+                
+            }
+            if(!valid){
+                alert("Entered NIC not valid");
+            }
+        }
+        return valid;
     }
     componentWillMount(){
 
@@ -83,53 +181,57 @@ class SelectView extends Component {
         }
 
 
-        axios.get("http://localhost:9000/supervisor/getsupervisor/"+selectedSupervisor).then(
-            (res)=>{
-                console.log("Supervisor: "+res);
-                axios.get("http://localhost:9000/company/getcompany/"+res.data["companyid"]).then(
-                    (com)=>{
 
-                        console.log("Company :"+com);
-                        axios.post("http://localhost:9000/forms/formi1",{
-            
-                            studentId:StudentId,
-                            studentName:StudentName,
-                            studentAddress:StudentAddress,
-                            studentEmail:StudentEmail,
-                            studentHomePhone:StudentHomeContact,
-                            studentMobilePhone:StudentMobile,
-                            semester:Semester,
-                            year:StudentYear,
-                            cgpa:StudentCGPA,
-                            // supervisorName:res.data.fname+" "+res.data.lname,
-                            // supervisorTitle:res.data.title,
-                            // supervisorDesignation:res.data.designation,
-                            // supervisorPhone:res.data.contact,
-                            supervisorEmail:res.data.email,
-                            // companyName:com.data.cmpName,
-                            // companyAddres:com.data.address,
-                            status:"PARTIAL"
+        if(this.validateForm()){
+            axios.get("http://localhost:9000/supervisor/getsupervisor/"+selectedSupervisor).then(
+                (res)=>{
+                    console.log("Supervisor: "+res);
+                    axios.get("http://localhost:9000/company/getcompany/"+res.data["companyid"]).then(
+                        (com)=>{
 
-
-                        }).then(
-                            function(response){
-                                
-                                console.log(response);
-                                alert("Form created successfully");
-                               
-                            }
-                        ).catch(function (error) {
-                            console.log(error);
-                            alert("Error");
-                            
-                        });
-                    }
-            );
+                            console.log("Company :"+com);
+                            axios.post("http://localhost:9000/forms/formi1",{
                 
-            }
-            
-        )
+                                studentId:StudentId,
+                                studentName:StudentName,
+                                studentAddress:StudentAddress,
+                                studentEmail:StudentEmail,
+                                studentHomePhone:StudentHomeContact,
+                                studentMobilePhone:StudentMobile,
+                                semester:Semester,
+                                year:StudentYear,
+                                cgpa:StudentCGPA,
+                                // supervisorName:res.data.fname+" "+res.data.lname,
+                                // supervisorTitle:res.data.title,
+                                // supervisorDesignation:res.data.designation,
+                                // supervisorPhone:res.data.contact,
+                                supervisorEmail:res.data.email,
+                                // companyName:com.data.cmpName,
+                                // companyAddres:com.data.address,
+                                status:"PARTIAL"
 
+
+                            }).then(
+                                function(response){
+                                    
+                                    console.log(response);
+                                    alert("Form created successfully");
+                                
+                                }
+                            ).catch(function (error) {
+                                console.log(error);
+                                alert("Error");
+                                
+                            });
+                        }
+                );
+                    
+                }
+                
+            )
+        }else{
+            alert("Please enter correct details in previous step.");
+        }
         
             
             window.$('#addSupModal').hide();

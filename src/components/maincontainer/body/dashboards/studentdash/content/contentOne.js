@@ -21,7 +21,8 @@ class ContentOne extends Component {
             StudentMobile:"",
             StudentYear:"",
             Semester:"",
-            selectVisible:false
+            selectVisible:false,
+            valid:false
         };
         this.setName = this.setName.bind(this);
         this.setAddress = this.setAddress.bind(this);
@@ -33,8 +34,11 @@ class ContentOne extends Component {
         this.setStudentMobile = this.setStudentMobile.bind(this);
         this.setID = this.setID.bind(this);
         this.getStudentDetails = this.getStudentDetails.bind(this);
-        // this.getStudentDetails();
+
+
     }
+
+   
     setName(e){
         this.setState({StudentName:e.target.value})
     }
@@ -54,12 +58,55 @@ class ContentOne extends Component {
         this.setState({StudentEmail:e.target.value})
     }
     setYear(e){
+        var valid =  /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(e.target.value)
+        if(e.target.value.toString().length>1){
+            e.target.value=e.target.value.toString().substr(1)[0];
+                if(e.target.value>4){
+                    e.target.value=4;
+                }else if(e.target.value<=0){
+                    e.target.value=1;
+                }else if(valid){
+                    e.target.value=0;
+                }
+            }
         this.setState({StudentYear:e.target.value})
     }
     setSemester(e){
+        var valid =  /[!@#$%^&*()_+\-=\[\]{};':"\\|,..<>\/?]+/.test(e.target.value)
+      
+        if(valid){
+            e.target.value=e.target.value.toString().substr(e.target.value.toString().length-2)[0]
+        }
+        if(e.target.value.toString().length>1){
+            e.target.value=e.target.value.toString().substr(1)[0];
+            if(e.target.value>2){
+                e.target.value=2;
+            }else if(e.target.value<=0){
+                e.target.value=1;
+            }else if(!valid){
+                e.target.value=1;
+            }
+        }
         this.setState({Semester:e.target.value})
     }
     setCGPA(e){
+        if(e.target.value.toString().length>4){
+            e.target.value=e.target.value.toString().substr(4)[0];
+
+                if(parseFloat(e.target.value)>4){
+                    e.target.value=4.2
+                }else if(parseFloat(e.target.value)<0){
+                    e.target.value=0;
+                }
+                // }else{
+                // e.target.value = "";
+                // }
+            
+        }else if(parseFloat(e.target.value.toString())>4.2&&e.target.value.toString().length>=2){
+            if(/^[.]$/.test(e.target.value.toString())){}else{
+                e.target.value=4.2
+            }
+        }
         this.setState({StudentCGPA:e.target.value})
     }
     componentWillMount(){
@@ -349,7 +396,7 @@ class ContentOne extends Component {
                                                                 <label>Semester:</label>
                                                             </div>
                                                             <div className="col-md-6 col-sm-6">
-                                                                <input className='inputBlock' type="text" id ="sem" name="Semester" value={this.state.Semester} onChange={this.setSemester}/>
+                                                                <input className='inputBlock'  type="number" min='1' max='2' id ="sem" name="Semester" value={this.state.Semester} onChange={this.setSemester}/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -359,7 +406,7 @@ class ContentOne extends Component {
                                                                 <label>Year:</label>
                                                             </div>
                                                             <div className="col-md-6 col-sm-6">
-                                                                <input className='inputBlock' type="text" id ="yr" name="Year" value={this.state.StudentYear} onChange={this.setYear}/>
+                                                                <input className='inputBlock'  type="number" min='1' max='4' id ="yr" name="Year" value={this.state.StudentYear} onChange={this.setYear}/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -369,7 +416,7 @@ class ContentOne extends Component {
                                                                 <label>CGPA:</label>
                                                             </div>
                                                             <div className="col-md-6 col-sm-6">
-                                                                <input className='inputBlock' type="text" id ="cgpa" name="StudentCGPA" value={this.state.StudentCGPA} onChange={this.setCGPA}/>
+                                                                <input className='inputBlock'  type="text" id ="cgpa" name="StudentCGPA" value={this.state.StudentCGPA} onChange={this.setCGPA}/>
                                                             </div>
                                                         </div>
                                                     </div>
