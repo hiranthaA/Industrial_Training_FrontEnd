@@ -6,6 +6,7 @@ class ContentThree extends Component {
     constructor(props) {
         super(props);
         this.update = this.update.bind(this);
+        this.resetPassword = this.resetPassword.bind(this);
         this.state = {
             company: [],
             error: null,
@@ -61,6 +62,65 @@ class ContentThree extends Component {
 
     }
 
+    resetPassword(){
+        var currPw = document.getElementById("currentPassword").value;
+        var newPw = document.getElementById("newPassword").value;
+        var confNewPw = document.getElementById("confNewPassword").value;
+        var email = this.props.loggeduser.email;
+        var id = this.props.loggeduser.id;
+
+        if(currPw==""){
+            alert("Enter Current Password");
+        }else if(newPw==""){
+            alert("Enter New Password");
+        }else if(newPw!=confNewPw){
+            alert("New Password Confirmation Invalid");
+        }else {
+
+            var obj5 = {
+                email: email,
+                password: newPw,
+                type: "company",
+                id: id
+
+            };
+            fetch("http://localhost:9000/user/getUser/" + email)
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        console.log("pw results are " + result.id);
+                        if (result.password == currPw) {
+                            console.log("equal");
+
+                            fetch('http://localhost:9000/user/resetPassword', {
+                                method: 'POST',
+                                headers: {
+                                    'Accept': 'application/json, text/plain',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(obj5)
+                            }).then(function () {
+                                alert("Password Reset Succesfully!");
+                                document.getElementById("currentPassword").value="";
+                                document.getElementById("newPassword").value="";
+                                document.getElementById("confNewPassword").value="";
+                            });
+
+                        }else{
+                            alert("Password Entered Not Matching the Current Password");
+                        }
+
+
+                    },
+                    (error) => {
+                        this.setState({
+                            error
+                        });
+                    }
+                )
+        }
+    }
+
     componentDidMount() {
 
         console.log("logged is "+this.props.loggeduser.email);
@@ -109,7 +169,7 @@ class ContentThree extends Component {
                                   <div className="row">
                                       <div className="col-sm-6 col-md-6">
 
-                                          <div className="row">
+                                            <div className="row">
                                               <div className="col-sm-6 col-md-6">
                                                   <div className="form-group">
                                                       <label id="label" >Company Name</label>
@@ -119,7 +179,7 @@ class ContentThree extends Component {
                                           </div>
 
                                           <div className="row">
-                                              <div className="col-md-12">
+                                              <div className="col-md-12 ">
                                                   <div className="form-group">
                                                       <label id="label">Company Email</label>
                                                       <input type="email" className="form-control" id="companyEmail" placeholder="Company Email"  readOnly></input>
@@ -173,9 +233,53 @@ class ContentThree extends Component {
                                               </div>
                                           </div>
 
-
                                       </div>
+                                  <div className="col-sm-6 col-md-6">
 
+                                      <div className="row">
+                                          <div className="col-sm-11 col-md-11 offset-sm-1">
+                                              <div className="form-group">
+                                                  <div className="card-header ">
+                                                      <h4 className="heading "> Reset Password</h4>
+                                                  </div>
+                                              </div>
+
+                                              <div className="row">
+                                                  <div className="col-md-12">
+                                                      <div className="form-group">
+                                                          <label id="label">Current Password</label>
+                                                          <input type="password" className="form-control" id="currentPassword" placeholder="Current Password"></input>
+                                                      </div>
+                                                  </div>
+                                              </div>
+
+                                              <div className="row">
+                                                  <div className="col-md-12">
+                                                      <div className="form-group">
+                                                          <label id="label">New Password</label>
+                                                          <input type="Password" className="form-control" id="newPassword" placeholder="New Password"></input>
+                                                      </div>
+                                                  </div>
+                                              </div>
+
+                                              <div className="row">
+                                                  <div className="col-md-12">
+                                                      <div className="form-group">
+                                                          <label id="label">Confirm New Password</label>
+                                                          <input type="Password" className="form-control" id="confNewPassword" placeholder="Confirm New Password"></input>
+                                                      </div>
+                                                  </div>
+                                              </div>
+
+                                              <div className="row">
+                                                  <div className="col-md-4  ml-auto">
+                                                      <button type="button" class="btn btn-outline-primary btn-block" onClick={this.resetPassword} >Reset Password</button>
+                                                  </div>
+                                              </div>
+
+                                          </div>
+                                      </div>
+                                  </div>
                                   </div>
                               </div>
 
