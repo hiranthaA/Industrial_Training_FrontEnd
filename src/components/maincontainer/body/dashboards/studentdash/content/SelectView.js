@@ -170,10 +170,16 @@ class SelectView extends Component {
         var to = this.state.student.to;
         var summary = this.state.student.summary;
         var details = this.state.student.details;
+        var internshipTitle = this.state.student.internshipTitle;
+        var specialisation = this.state.student.specialisation;
 
         var StudentEmail ;
         var StudentCGPA ;
         var StudentId;
+        var StudentName;
+        var StudentMobile;
+        var studentAddress;
+
         
         var supervisors = document.getElementsByName("Supervisor");
                 var selectedSupervisor;
@@ -187,8 +193,11 @@ class SelectView extends Component {
 
                 console.log(response.data);
                 StudentId=response.data.itNo;
+                StudentName=response.data.studentName;
                 StudentEmail=response.data.email;
                 StudentCGPA=response.data.gpa;
+                StudentMobile=response.data.mobileNo;
+                studentAddress=response.data.address;
                 
                 axios.get("http://localhost:9000/supervisor/getsupervisor/"+selectedSupervisor).then(
                 (res)=>{
@@ -200,13 +209,18 @@ class SelectView extends Component {
                             axios.post("http://localhost:9000/forms/formi3",{
                 
                                 studentId:StudentId,
+                                studentName:StudentName,
                                 studentEmail:StudentEmail,
+                                studentAddress:studentAddress,
+                                studentMobile:StudentMobile,
                                 trainingParty:party,
                                 description:description,
                                 from:from,
                                 to:to,
                                 summary:summary,
                                 details:details,
+                                internshipTitle:internshipTitle,
+                                specialisation:specialisation,
                                 supervisorEmail:res.data.email,
                                 status:"PARTIAL"
 
