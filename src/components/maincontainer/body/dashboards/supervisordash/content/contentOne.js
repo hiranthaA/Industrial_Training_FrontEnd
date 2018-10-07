@@ -6,169 +6,224 @@ class ContentOne extends Component {
 
     constructor(props) {
         super(props);
+        this.submitForm = this.submitForm.bind(this);
         this.state = {
-            formId: ""
+            supervisorEmail: "",
+            supervisorFName: "",
+            supervisorCompanyId: "",
+            formId: "",
+            formList: []
         }
     }
 
     componentDidMount(){
-        // debugger;
         console.log(this.props);
-        this.getSupervisorDetails();
+        if(this.props.loggeduser.email!=null){
+            this.getSupervisorDetails();
+            this.getForms();
+        }
     }
 
-//5b94d8acc4af1d200c031544
+    getForms(){
+        console.log("Calling getForms");
+        this.setState({ formList: [] });
+        Axios.get('http://localhost:9000/forms/formi1/supervisorEmail/'+this.props.loggeduser.email+'/status/PARTIAL').then(function (data) {
+            console.log(data.data);
+            this.setState({ formList: data.data });
+        }.bind(this));
+    }
 
     getSupervisorDetails(){
         Axios.get('http://localhost:9000/supervisor/get/'+this.props.loggeduser.email).then(function (data) {
             console.log(data.data);
-            return data.data;
-        }.bind(this)).then(function (object) {
-            let logdata = object;
-            console.log(logdata);
-            return logdata;
-        }.bind(this)).then(function (supervisor) {
-            document.getElementById("supervisorName").value=supervisor.fname + " " + supervisor.lname;
-            document.getElementById("supervisorPhone").value=supervisor.contact;
-            document.getElementById("supervisorTitle").value=supervisor.designation;
-            document.getElementById("supervisorEmail").value=supervisor.email;
-        });
+            this.setState({ supervisorFName: data.data.fname });
+            var companyId = data.data.companyid;
+            this.setState({ supervisorCompanyId: data.data.companyid });
+            document.getElementById("supervisorName").value=data.data.title + " " + data.data.fname + " " + data.data.lname;
+            document.getElementById("supervisorPhone").value=data.data.contact;
+            document.getElementById("supervisorTitle").value=data.data.designation;
+            document.getElementById("supervisorEmail").value=data.data.email;
+
+            if(companyId != null){
+                Axios.get('http://localhost:9000/company/getcompany/'+companyId).then(function (data) {
+                    console.log(data.data);
+                    document.getElementById("companyName").value=data.data.cmpName;
+                    document.getElementById("companyAddres").value=data.data.address;
+                });
+            }
+        }.bind(this));
     }
 
-    // getForms(){
-    //     Axios.get('http://localhost:9000/forms/formi1/supervisorEmail/'+ this.props.loggeduser.email +'/status/PARTIAL').then(function (data) {
-    //         console.log(data.data);
-    //         return data.data;
-    //     }.bind(this)).then(function (object) {
-    //         let logdata = object;
-    //         console.log(logdata);
-    //         return logdata;
-    //     }.bind(this)).then(function (form) {
-    //         this.setState({ formId: form.studentId });
-    //     });
-    // }
+    loadForm(e){
+        let studentID = e.currentTarget.getAttribute('studentId');
+        console.log("studentMail IS: " + studentID);
+        console.log(studentID);
+        Axios.get('http://localhost:9000/forms/formi1/'+studentID).then(function (data) {
+            console.log(data.data);
+            document.getElementById("formID").value=data.data.formId;
+        }.bind(this));
+    }
 
     render() {
-        return (
-            <div className="contentS card ">
 
+        if (this.state.formList.length>0) {
+            var tContent = (
+            <table className="table table-hover">
+            <tbody>
+            {
+                this.state.formList.map((val, i) => {
+                return (
+                    <tr key={i}>
+                    <td class="align-middle text-left"><span class="text-info">{val.studentName}</span></td>
+                    <td class="align-middle text-left"><span class="text-info">{val.studentEmail}</span></td>
+                    <td><button type="button" class="btn btn-outline-info float-right" id="test" data-toggle="modal" data-target="#formi1Modal" studentId={val.studentId} onClick={this.loadForm}>View</button></td>
+                </tr>
+                );
+                })
+            }
+            </tbody>
+            </table>
+            );
+        }else{
+            var tContent = (<span class="text-info text-left">No forms to fill.</span>);
+        }
+
+        return (
+            <div className="content card ">
                 <div className="card-header">
-                    <h4 className="heading ">{this.props.loggeduser.email}</h4>
+                    <h4 id="greeting" className="heading ">Hi, {this.state.supervisorFName}</h4>
                 </div>
                 <div className="card-body">
                     <div className="row">
-                        <div className="col-sm-8 col-md-8">
-
+                        <div className="col-md-12">
                             <div className="row">
-                                <div className="col-md-12">
-                                    <div className="form-group">
-                                        <label id="label">Employer's Name</label>
-                                        <input type="text" className="form-control" id="companyName" placeholder="Name"></input>
-                                    </div>
+                                <div className="col-sm-6 col-md-6 text-left">
+                                    {tContent}
                                 </div>
                             </div>
-
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="form-group">
-                                        <label id="label">Employer's Address</label>
-                                        <input type="text" className="form-control" id="companyAddres" placeholder="Address"></input>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="form-group">
-                                        <label id="label">Supervisor's Name</label>
-                                        <input type="text" className="form-control" id="supervisorName" placeholder="Name"></input>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="form-group">
-                                        <label id="label">Supervisor's Phone</label>
-                                        <input type="number" className="form-control" id="supervisorPhone" placeholder="Phone"></input>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="form-group">
-                                        <label id="label">Supervisor's Title</label>
-                                        <input type="text" className="form-control" id="supervisorTitle" placeholder="Title"></input>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="form-group">
-                                        <label id="label">Supervisor's Email</label>
-                                        <input type="email" className="form-control" id="supervisorEmail" placeholder="Email"></input>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="form-group">
-                                        <label id="label">Internship Start Date</label>
-                                        <input type="date" className="form-control" id="internshipStartDate" placeholder="Start Date"></input>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="form-group">
-                                        <label id="label">Internship End Date</label>
-                                        <input type="date" className="form-control" id="internshipEndDate" placeholder="End Date"></input>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="form-group">
-                                        <label id="label">No of Hours / Week</label>
-                                        <input type="number" min="1" max="100" className="form-control" id="hoursPerWeek" placeholder="Hours"></input>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="form-group">
-                                        <label id="label">Please list the tasks the student is expected to complete</label>
-                                        {/* <input type="text" className="form-control" id="expectedTasks" placeholder="Tasks"></input> */}
-                                        <textarea id="expectedTasks" cols="75" rows="5" placeholder="Tasks"></textarea>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="form-group">
-                                        <label id="label">List what the student will learn during the internship period</label>
-                                        {/* <input type="text" className="form-control" id="learningOutcomes" placeholder="Learning outcomes"></input> */}
-                                        <textarea id="learningOutcomes" cols="75" rows="5" placeholder="Learning outcomes"></textarea>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-3 ml-auto">
-                                    <button type="button" class="btn btn-outline-primary btn-block" onClick={this.submitForm} >Submit</button>
-                                </div>
-                            </div>
-
-
                         </div>
-
                     </div>
                 </div>
 
+                <div class="modal fade bd-example-modal-lg" id="formi1Modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div className="card-header">
+                                <h4 id="greeting" className="heading ">Form-I-1</h4>
+                                <input type="hidden" id="formID"></input>
+                            </div>
+                            <div className="card-body">
+                                <div className="row">
+                                    <div className="col-sm-8 col-md-8">
+
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <div className="form-group">
+                                                    <label id="label">Employer's Name</label>
+                                                    <input type="text" className="form-control" id="companyName" placeholder="Name"></input>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <div className="form-group">
+                                                    <label id="label">Employer's Address</label>
+                                                    <input type="text" className="form-control" id="companyAddres" placeholder="Address"></input>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <div className="form-group">
+                                                    <label id="label">Supervisor's Name</label>
+                                                    <input type="text" className="form-control" id="supervisorName" placeholder="Name"></input>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="form-group">
+                                                    <label id="label">Supervisor's Phone</label>
+                                                    <input type="number" className="form-control" id="supervisorPhone" placeholder="Phone"></input>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <div className="form-group">
+                                                    <label id="label">Supervisor's Title</label>
+                                                    <input type="text" className="form-control" id="supervisorTitle" placeholder="Title"></input>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="form-group">
+                                                    <label id="label">Supervisor's Email</label>
+                                                    <input type="email" className="form-control" id="supervisorEmail" placeholder="Email" disabled></input>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <div className="form-group">
+                                                    <label id="label">Internship Start Date</label>
+                                                    <input type="date" className="form-control" id="internshipStartDate" ></input>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="form-group">
+                                                    <label id="label">Internship End Date</label>
+                                                    <input type="date" className="form-control" id="internshipEndDate" placeholder="End Date"></input>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <div className="form-group">
+                                                    <label id="label">No of Hours / Week</label>
+                                                    <input type="number" min="1" max="100" className="form-control" id="hoursPerWeek" placeholder="Hours"></input>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <div className="form-group">
+                                                    <label>Please list the tasks the student is expected to complete</label>
+                                                    <textarea id="expectedTasks" cols="75" rows="5" placeholder="Tasks"></textarea>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <div className="form-group">
+                                                    <label>List what the student will learn during the internship period</label>
+                                                    <textarea id="learningOutcomes" cols="75" rows="5" placeholder="Learning outcomes"></textarea>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-md-3 ml-auto">
+                                                <button type="button" class="btn btn-outline-primary btn-block" onClick={this.submitForm} >Submit</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -221,7 +276,11 @@ class ContentOne extends Component {
             return;
         }
 
-        fetch('http://localhost:9000/forms/formi1/id/'  + '5b94ccd6c4af1d41d03da9fa', {
+        var formID = document.getElementById("formID").value;
+        console.log(formData);
+        var comp = this;
+
+        fetch('http://localhost:9000/forms/formi1/id/'  + formID, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain',
@@ -229,14 +288,16 @@ class ContentOne extends Component {
             },
             body: JSON.stringify(formData)
         }).then(function (response) {
-            alert("Form Updated Succesfully");
-            return response.json();
-        }).then(function (responseData) {
-            console.log(responseData);
+            if(response!=null){
+                alert("Form Updated Succesfully!");
+                window.$('#formi1Modal').modal('hide');
+                comp.getForms();
+                console.log(response.json());
+            }else{
+                alert("Form Updated Failed!");
+            }
         });
     }
-
-
 }
 
 export default ContentOne;
