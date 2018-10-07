@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import axios                    from 'axios';
 import SelectView               from './SelectView';
 import './content.css';
+import Axios from 'axios';
+// import React from '../../../../../../../public/person.jpg';
 
 class ContentTwo extends Component {
   constructor(props){
@@ -174,6 +176,8 @@ class ContentTwo extends Component {
       </div>
     );
   }
+
+
 }
 
 export default ContentTwo;
