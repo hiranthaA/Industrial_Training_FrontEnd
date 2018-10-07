@@ -53,6 +53,7 @@ class Login extends Component {
                 }
                 else{
                     console.log("logdata recieved");
+                    localStorage.setItem('email',logdata.email);
                     this.props.setview(logdata.type,logdata);
                 }
                 return logdata;
