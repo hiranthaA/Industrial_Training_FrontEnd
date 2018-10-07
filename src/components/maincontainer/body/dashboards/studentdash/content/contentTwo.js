@@ -65,11 +65,11 @@ class ContentTwo extends Component {
       <div className="contentStudent">
           <div className="card">
           <div className="card-head bg-secondary text-white">
-              <h4 className="heading pl-2">Form I-3</h4>
+              <h1 className="heading pl-2">Form I-3</h1>
           </div>
           <div className="card-body">
           <div className="row">
-            <h5>Internship Information </h5>
+            <h3>Internship Information </h3>
           </div>
             
             
@@ -92,7 +92,7 @@ class ContentTwo extends Component {
               </div>
             </div>
             <div className="row">
-              <h5>Enter Internal Training Information</h5>
+              <h3>Enter Internal Training Information</h3>
             </div>
             <div className="row">
               <div className="col-md-2 col-sm-2">
@@ -145,7 +145,7 @@ class ContentTwo extends Component {
           </div>
           <div className="card">
             <div className="card-head bg-warning">
-              <h4>Summary of tasks on this month</h4>
+              <h3>Summary of tasks on this month</h3>
             </div>
             <div className="card-body">
               <div className="row">
@@ -166,7 +166,7 @@ class ContentTwo extends Component {
               </div>
             
             <div className="card-footer">
-                <button className="btn btn-primary i3Input" onClick={this.submitFrom} type="button">Submit</button>
+                <button className="btn btn-primary i3InputBtn" onClick={this.submitFrom} type="button">Submit</button>
             </div>
           </div>
         </div>
