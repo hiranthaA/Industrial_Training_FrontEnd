@@ -12,6 +12,12 @@
     padding: 8px;
     margin: 15px;
 }
+.i3InputBtn{
+    width:50%;
+    border-radius: 8px;
+    padding: 8px;
+    margin: 15px;
+}
 .headingStudent{
     text-align: left;
 }
