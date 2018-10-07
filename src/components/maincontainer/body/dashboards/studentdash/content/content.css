@@ -1,16 +1,54 @@
-.content{
+.contentStudent{
     width : 100%;
     height : 100vh;
 }
-
-.heading{
+.rowStudent{
+    margin: 0px;
+    
+}
+.i3Input{
+    width:100%;
+    border-radius: 8px;
+    padding: 8px;
+    margin: 15px;
+}
+.i3InputBtn{
+    width:50%;
+    border-radius: 8px;
+    padding: 8px;
+    margin: 15px;
+}
+.headingStudent{
     text-align: left;
 }
 
-#label{
+.labelStudent{
     float: left;
+    margin: 15px
 }
 
 .inputBlock{
     width:100%;
+    border-radius: 15px;
+    padding: 5px;
+}
+
+.supervisorView{
+    padding-right: 0;
+    position: fixed;
+    margin: 5%;
+    height: 400px;
+    
+    
+}
+.modal-dialog-Student {
+    min-width: 50%;
+    
+}
+
+@media (min-width: 576px){
+    .modal-dialog-Student {
+        max-width: 100%;
+        margin: 1.75rem auto;
+    }
 }

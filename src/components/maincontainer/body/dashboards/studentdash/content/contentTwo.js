@@ -1,313 +1,182 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import axios                    from 'axios';
+import SelectView               from './SelectView';
 import './content.css';
 import Axios from 'axios';
 // import React from '../../../../../../../public/person.jpg';
 
 class ContentTwo extends Component {
-  constructor(props) {
-    super(props)
+  constructor(props){
+    super(props); 
+    this.handleChange = this.handleChange.bind(this);  
+    this.submitFrom = this.submitFrom.bind(this);
     this.state = {
-      userData:{
-        studentName:""
-      }
+      
+      party:"",
+      description:"",
+      from:"",
+      to:"",
+      summary:"",
+      details:"",
+      supervisorSelect:false,
+      specialisation:"",
+      internshipTitle:""
     }
-    this.updateStudent = this.updateStudent.bind(this);
-    this.getStudentDetails=this.getStudentDetails.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.getStudentDetails();
   }
-
-  handleChange(event) {
-    console.log(event.target.value);
-    console.log(event.target.value);
-    console.log(event.target.id);
-    // console.log("id isss"+event.target.id);
-    // console.log("state isss"+this.state.userData.itNo);
-
-
-    if(event.target.id=="studentName"){ 
-      let user=this.state.userData;
-      user.studentName=event.target.value;
-      this.setState(
-        {
-          userData:user
-      }
-      );
+  submitFrom(e){
+    if(this.state.description!==""&&this.state.summary!==""){
+      if(this.state.internshiTitle==="")
+        alert("Fill Internship Title")
+        else{
+          this.setState({supervisorSelect:true})
+          window.$("#addSupModal").modal("show");
+          window.$("#addSupModal").show();
+          window.$('.modal-backdrop').show();
+        }
     }
-    else if(event.target.id=="studentID"){
-      let user=this.state.userData;
-      user.itNo=event.target.value;
-      this.setState(
-        {
-          userData:user
-      }
-      );
-    }
-
-    else if(event.target.id=="address"){
-      let user=this.state.userData;
-      user.address=event.target.value;
-      this.setState(
-        {
-          userData:user
-      }
-      );
-    }
-    else if(event.target.id=="mobile"){
-      let user=this.state.userData;
-      user.mobileNo=event.target.value;
-      this.setState(
-        {
-          userData:user
-      }
-      );
-    }
-    else if(event.target.id=="home"){
-      let user=this.state.userData;
-      user.homeNo=event.target.value;
-      this.setState(
-        {
-          userData:user
-      }
-      );
-    }
-    
+    else
+      alert("Please fill the description and summary of key tasks")
   }
+  handleChange(e){
+    var id = e.target.id;
+    if(id==="trainingParty"){
+      this.setState({party:e.target.value});
+    }else if(id==="trainingDescription"){
+      this.setState({description:e.target.value});
+    }else if(id==="from"){
+      this.setState({from:e.target.value});
+    }else if(id==="to"){
+      this.setState({to:e.target.value});
+    }else if(id==="summary"){
+      this.setState({summary:e.target.value});
+    }else if(id==="details"){
+      this.setState({details:e.target.value});
+    }else if(id==="specialisation"){
+      this.setState({specialisation:e.target.value})
+    }else if(id==="internshipTitle"){
+      this.setState({internshipTitle:e.target.value})
+    }
 
-  render() {
-    return (
-      <div className="content">
-
-        <div className="card">
+  }
+  render(){
+    let supervisorSelection;
+        if(this.state.supervisorSelect!==false){
+            supervisorSelection =(<SelectView student={this.state} loggeduser={this.props.loggeduser} />);
+        }
+    return(
+      <div className="contentStudent">
+          <div className="card">
+          <div className="card-head bg-secondary text-white">
+              <h1 className="heading pl-2">Form I-3</h1>
+          </div>
           <div className="card-body">
-
+          <div className="row">
+            <h3>Internship Information </h3>
+          </div>
+            
+            
             <div className="row">
-              <div className="card-body">
-
+            <div className="col-md-2 col-sm-2">
+                <label className="labelStudent" htmlFor="internshipTitle"><b>Internship Title<font color="red">*</font></b></label>
+                
+              </div>
+              <div className="col-md-10 col-sm-10">
+                <input type="text" className="i3Input" value={this.state.internshipTitle} onChange={this.handleChange} placeholder="Internship Title-Required" id="internshipTitle"></input>
+              </div>
+            </div>
+            <div className="row">
+            <div className="col-md-2 col-sm-2">
+                <label className="labelStudent" htmlFor="specialisation"><b>Specialisation</b></label>
+                
+              </div>
+              <div className="col-md-10 col-sm-10">
+                <input type="text" className="i3Input" value={this.state.specialisation} onChange={this.handleChange} placeholder="Specialisation" id="specialisation"></input>
+              </div>
+            </div>
+            <div className="row">
+              <h3>Enter Internal Training Information</h3>
+            </div>
+            <div className="row">
+              <div className="col-md-2 col-sm-2">
+                <label className="labelStudent" htmlFor="trainingParty"><b>Training Party</b></label>
+                
+              </div>
+              <div className="col-md-10 col-sm-10">
+                <input type="text" className="i3Input" value={this.state.party} onChange={this.handleChange} placeholder="Training Party" id="trainingParty"></input>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-2 col-sm-2">
+                <label  className="labelStudent" htmlFor="trainingDescription"><b>Training Description<font color="red">*</font></b></label>
+                
+              </div>
+              <div className="col-md-10 col-sm-10">
+                <textarea className="i3Input" value={this.state.description} onChange={this.handleChange} placeholder="Training Description-Required" id="trainingDescription" row={3} col={2}></textarea>
+              </div>
+            </div>
+          
+            <div className="row">
+              <div className="col-md-1 col-sm-1">
+                <label  className="labelStudent"><b>Period:</b></label>
+                
+              </div>
+              <div className="col-md-11 col-sm-11">
                 <div className="row">
-
-                  <div className="col-sm-8 col-md-8">
-                    <div className="row">
-                      <div className="col-sm-6 col-md-6">
-                        <img className="img-thumbnail img-responsive" src="./person.png" alt="No image" />
-                      </div>
-
-                      <div className="col-sm-6 col-md-2">
-                          <label id="label">Year</label>
-                          <input type="number" min='1' max='4' value={this.state.userData.year} className="form-control" id="year" placeholder="Year" ></input>
-                      </div>
-
-                      <div className="col-md-2">
-
-                          <label id="label">Semester</label>
-                          <input type="number" min='1' max='2' value={this.state.userData.semester} className="form-control" id="semester" placeholder="Sem"></input>
-                      </div>
-
-                      <div className="col-md-2">
-
-                          <label id="label">GPA</label>
-                          <input type="number" min='1' max='4' value={this.state.userData.gpa} className="form-control" id="gpa" placeholder="GPA" ></input>
-
-                      </div>
-                    </div>
-
-                    <div className="row">
-                      <div className="col-md-12">
-
-                          <label id="label">Student Name</label>
-                          <input type="text" className="form-control" value={this.state.userData.studentName} onChange={this.handleChange} id="studentName" placeholder="Student Name"></input>
-
-                      </div>
-                    </div>
-
-                  <div className="row">
-                      <div className="col-md-12">
-
-                          <label id="label">IT Number</label>
-                          <input type="text" className="form-control" value={this.state.userData.itNo} onChange={this.handleChange} id="studentID" ></input>
-                      </div>
-                    </div>
-
-                    <div className="row">
-                      <div className="col-md-12">
-                        <div className="form-group">
-                          <label id="label">Address</label>
-                          <input type="text" className="form-control" value={this.state.userData.address} onChange={this.handleChange} id="address" placeholder="Student Address"></input>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="row">
-                      <div className="col-md-6">
-
-                          <label id="label">Mobile</label>
-                          <input type="number" className="form-control" value={this.state.userData.mobileNo} onChange={this.handleChange} id="mobile" placeholder="Mobile"></input>
-
-                      </div>
-                      <div className="col-md-6">
-
-                          <label id="label">Home</label>
-                          <input type="number" className="form-control" value={this.state.userData.homeNo} onChange={this.handleChange} id="home" placeholder="Home"></input>
-
-                      </div>
-                    </div>
-                    {/* <div className="row mt-2 mb-2">
-                        <div className="col-md-6">
-                        <h5 className="text-left">Reset Password</h5>
-                        </div>
-                    </div> */}
-                    {/* <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label id="label">Old Password</label>
-                          <input type="oldpassword" className="form-control" id="oldStudentPassword" placeholder="Old Password"></input>
-                        </div>
-                      </div>
-                    </div> */}
-
-                    {/* <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label id="label">New Password</label>
-                          <input type="newpassword" className="form-control" id="newStudentPassword" placeholder="Password"></input>
-                        </div>
-                      </div> */}
-                      {/* <div className="col-md-6">
-                        <div className="form-group">
-                          <label id="label">Confirm New Password</label>
-                          <input type="confpassword" className="form-control" id="newStudentPasswordConf" placeholder="Confirm Password"></input>
-                        </div>
-                      </div>
-                    </div> */}
-
-                    <div className="row">
-                      <div className="col-md-3 mt-3 ml-auto">
-                        <button type="button" class="btn btn-outline-primary btn-block" onClick={this.updateStudent} >Update Profile</button>
-                      </div>
-                    </div>
-
-
+                  <div className="col-md-1 col-sm-1">
+                      <label className="labelStudent" htmlFor="from"><b>From</b></label>
                   </div>
-
+                  <div className="col-md-11 col-sm-11">
+                      <input type="date" value={this.state.from} onChange={this.handleChange} className="i3Input" id="from" placeholder="mm/dd/yyyy"></input>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-1 col-sm-1">
+                        <label className="labelStudent" htmlFor="to"><b>To</b></label>
+                    </div>
+                    <div className="col-md-11 col-sm-11">
+                      <input type="date" value={this.state.to} onChange={this.handleChange} className="i3Input" id="to" placeholder="mm/dd/yyyy"></input>
+                    </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          <div className="card-footer">
+          
+          </div>
+          </div>
+          <div className="card">
+            <div className="card-head bg-warning">
+              <h3>Summary of tasks on this month</h3>
+            </div>
+            <div className="card-body">
+              <div className="row">
+                <div className="col-md-2 col-sm-2" >
+                    <label className="labelStudent" htmlFor="summary">Summary of key tasks<font color="red">*</font></label>
+                </div>
+                <div className="col-md-10 col-sm-10" >
+                    <textarea className="i3Input" value={this.state.summary} onChange={this.handleChange} placeholder="Enter your summary of key tasks completed in this month.-Required" id="summary"></textarea>
                 </div>
               </div>
-
+              <div className="row">
+                <div className="col-md-2 col-sm-2" >
+                    <label className="labelStudent" htmlFor="details">Details of key tasks</label>
+                </div>
+                <div className="col-md-10 col-sm-10" >
+                    <textarea className="i3Input" value={this.state.details} onChange={this.handleChange} placeholder="Enter your details of key tasks completed in this month.-Optional" id="details"></textarea>
+                </div>
+              </div>
+            
+            <div className="card-footer">
+                <button className="btn btn-primary i3InputBtn" onClick={this.submitFrom} type="button">Submit</button>
             </div>
-
           </div>
         </div>
-
+        {supervisorSelection}
       </div>
     );
   }
 
-  getStudentDetails(){
-    Axios.get(`http://localhost:9000/student/get/${localStorage.getItem('email')}`)
-      .then(function (response) {
-        // handle success
-        console.log(response);
-        this.setState(
-          {userData:response.data}
-        )
-      }.bind(this))
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .then(function () {
-        // always executed
-      });
-  }
-
-clear(){
-  this.setState(
-    {userData:{}}
-  )
-}
-
-  updateStudent() {
-
-    var studentName = this.state.userData.studentName;
-    var itNo = this.state.userData.itNo;
-    var address = this.state.userData.address;
-    var mobileNo = this.state.userData.mobileNo;
-    var homeNo = this.state.userData.homeNo;
-
-  
-    // var studentPassOld=document.getElementById("oldStudentPassword").value;
-    // var studentPass = document.getElementById("newStudentPassword").value;
-    // var studentPassConf = document.getElementById("newStudentPassword").value;
-
-    if (itNo === ""||itNo.length!==10) {
-      alert("Invalid IT number");
-    }else if (studentName === "") {
-      alert("Invalid student name");
-    } else if (address === "") {
-      alert("Invalid address details");
-    } else if (mobileNo==""||mobileNo.length !==10) {
-      alert("Invalid MobileNo");
-    }else if (homeNo==""||homeNo.length !==10) {
-      alert("Invalid MobileNo");
-    }
-    // else if(this.state.userData.){
-    //   alert("Password you entered doesnt match with the old one.Try again");
-    // }
-    //  else if (studentPass !== studentPassConf) {
-    //   alert("Password entered doesn't match");
-    // } else if (homeNo == "") {
-    //   alert("Invalid Home TelephoneNo");
-    // } 
-    else {
-
-      // let student = {
-      //   id:this.
-      //   itNo: itNo,
-      //   studentName: studentName,
-      //   address: address,
-      //   mobileNo: mobileNo,
-      //   homeNo: homeNo
-      // };
-
-      let student=this.state.userData;
-      // console.log(student);  
-      fetch('http://localhost:9000/student/update', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json, text/plain',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(student)
-      }).then(function (data) {
-        alert("Updated Successfully");
-        this.clear();
-      }.bind(this));
-      
-      // .then(function (data) {
-      //   console.log("return2", data);
-      //   var id = (data.id);
-      //   var objUser = {
-      //     id: id,
-      //     // email: email,
-      //     password: studentPass,
-      //     type: "student"
-      //   };
-      //   return fetch('http://localhost:9000/user/addUser', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Accept': 'application/json, text/plain',
-      //       'Content-Type': 'application/json'
-      //     },
-      //     body: JSON.stringify(objUser)
-      //   }).then(function () {
-      //     alert("Student Registration Succesfull");
-      //     window.location.reload();
-      //   });
-
-      // }
-
-      // )
-    }
-  }
 
 }
 
